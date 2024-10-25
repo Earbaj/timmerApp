@@ -1,8 +1,15 @@
 import 'package:flutter/material.dart';
+import 'package:hive_flutter/hive_flutter.dart';
 import 'package:provider/provider.dart';
 import 'package:untitled3/timmer_model.dart';
 
-void main() {
+void main() async {
+  WidgetsFlutterBinding.ensureInitialized();
+
+  // Initialize Hive and open the box
+  await Hive.initFlutter();
+  await Hive.openBox('timeBox'); // Open a Hive box to store the time data
+
   runApp(
     ChangeNotifierProvider(
       create: (context) => TimerModel(),
@@ -163,7 +170,7 @@ class TimerScreen extends StatelessWidget {
                 },
                 child: Text('Clock Out'),
                 style: ElevatedButton.styleFrom(
-                  primary: Colors.red,
+                  backgroundColor: Colors.red,
                 ),
               ),
             ],
