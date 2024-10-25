@@ -19,18 +19,28 @@ class TimerModel extends ChangeNotifier {
 
   Future<void> _initializeData() async {
     _timeBox = await Hive.openBox('timeBox');
+    _sessionBox =
+        await Hive.openBox('sessionBox'); // Initialize the session box
     totalDuration = _getDurationFromHive('totalDuration');
     breakDuration = _getDurationFromHive('breakDuration');
     notifyListeners();
   }
 
   void _saveSession() {
-    final session = {
-      'date': DateTime.now().toIso8601String(),
-      'workTime': totalDuration.inSeconds,
-      'breakTime': breakDuration.inSeconds,
-    };
-    _sessionBox.add(session); // Save each session to Hive
+    // Save session only if the totalDuration is valid
+    if (totalDuration.inSeconds > 0) {
+      final session = {
+        'date': DateTime.now().toIso8601String(),
+        'workTime': totalDuration.inSeconds,
+        'breakTime': breakDuration.inSeconds,
+      };
+      _sessionBox.add(session); // Save each session to Hive
+    }
+  }
+
+  List<Map<String, dynamic>> getSessions() {
+    final sessions = _sessionBox.values.toList();
+    return sessions.cast<Map<String, dynamic>>(); // Cast to expected type
   }
 
   Duration _getDurationFromHive(String key) {

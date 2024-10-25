@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:hive_flutter/hive_flutter.dart';
 import 'package:provider/provider.dart';
 import 'package:untitled3/timmer_model.dart';
+import 'package:untitled3/ui/session_page.dart';
 
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();
@@ -39,6 +40,17 @@ class TimerScreen extends StatelessWidget {
     return Scaffold(
       appBar: AppBar(
         title: Text('Timer App'),
+        actions: [
+          IconButton(
+            icon: Icon(Icons.history),
+            onPressed: () {
+              Navigator.push(
+                context,
+                MaterialPageRoute(builder: (context) => SessionHistoryScreen()),
+              );
+            },
+          ),
+        ],
       ),
       body: Center(
         child: Padding(
